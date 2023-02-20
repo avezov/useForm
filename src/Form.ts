@@ -4,7 +4,7 @@ import { AvailableValidators, Validators } from './Validator'
 
 export type FormProps = {
   fields: Record<string, FormFieldProps>
-  onSubmit?(): void
+  onSubmit?(formData: Record<string, any>): void
 }
 
 export type FormFieldProps = {
@@ -22,7 +22,7 @@ type FieldNames<T extends FormProps> = {
 
 export class Form<T extends FormProps> {
   private refresh: () => void;
-  private onSubmit?: () => void;
+  private onSubmit: (formData: FieldNames<T>) => void;
 
   fields: FieldNames<T> = {}
   isValid: boolean = false;
@@ -30,14 +30,15 @@ export class Form<T extends FormProps> {
   constructor(props: T, refresh: () => void) {
     this.refresh = refresh;
     this.fields = mapValues(props.fields, field => new FormField(field, this.refresh))
-    this.onSubmit = props.onSubmit;
+    this.onSubmit = props.onSubmit as (formData: FieldNames<T>) => void;
   }
 
   handleSubmit = () => {
     const isValid = this.validate();
 
     if (isValid) {
-      this.onSubmit?.()
+      const formData = this.getFormData();
+      this.onSubmit?.(formData)
     }
 
     return isValid;
@@ -46,6 +47,10 @@ export class Form<T extends FormProps> {
   private setIsValid(isValid: boolean) {
     this.isValid = isValid;
     this.refresh()
+  }
+
+  getFormData(): FieldNames<T> {
+    return mapValues(this.fields, field => field?.value)
   }
 
   validate() {
