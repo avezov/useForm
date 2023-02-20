@@ -8,7 +8,7 @@ export type FormProps = {
 }
 
 export type FormFieldProps = {
-  defaultValue?: number | string | number[] | string[],
+  defaultValue?: number | string | number[] | string[] | boolean | boolean[],
   valueType?: any
   type?: 'string' | 'number' | 'number[]' | 'string[]'
   validators?: AvailableValidators[]
@@ -22,6 +22,7 @@ type FieldNames<T extends FormProps> = {
 
 export class Form<T extends FormProps> {
   private refresh: () => void;
+  private onSubmit?: () => void;
 
   fields: FieldNames<T> = {}
   isValid: boolean = false;
@@ -29,11 +30,17 @@ export class Form<T extends FormProps> {
   constructor(props: T, refresh: () => void) {
     this.refresh = refresh;
     this.fields = mapValues(props.fields, field => new FormField(field, this.refresh))
+    this.onSubmit = props.onSubmit;
   }
 
   handleSubmit = () => {
-    this.validate()
-    return true;
+    const isValid = this.validate();
+
+    if (isValid) {
+      this.onSubmit?.()
+    }
+
+    return isValid;
   }
 
   private setIsValid(isValid: boolean) {
