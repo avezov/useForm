@@ -10,7 +10,6 @@ export type FormProps = {
 export type FormFieldProps = {
   defaultValue?: number | string | number[] | string[] | boolean | boolean[],
   valueType?: any
-  type?: 'string' | 'number' | 'number[]' | 'string[]'
   validators?: AvailableValidators[]
 }
 
@@ -63,7 +62,7 @@ export class Form<T extends FormProps> {
 
 export class FormField<Value> {
   private _value: Value;
-  private type: FormFieldProps['type'];
+  private type;
   error: boolean = false;
   errorText?: string;
 
@@ -72,7 +71,7 @@ export class FormField<Value> {
 
   constructor(props: FormFieldProps, refresh: () => void) {
     this._value = props.defaultValue as Value;
-    this.type = props.type;
+    this.type = props.valueType;
     this.refresh = refresh;
     this.validators = props.validators?.map(([validator, params]) => {
       return new validator({ field: this, params })
@@ -80,14 +79,20 @@ export class FormField<Value> {
   }
 
   get value() {
-    return (this._value
-      ? this._value
-      : this.type === 'string[]' || this.type === 'number[]'
-        ? []
-        : '') as Value
+    if (this._value) {
+      return this._value;
+    }
+
+    if (typeof this.type === 'boolean') {
+      return false as Value;
+    }
+
+    if (Array.isArray(this.type)) {
+      return [] as Value;
+    }
   }
 
-  setValue = (newValue: Value) => {
+  public setValue = (newValue: Value) => {
     this._value = newValue;
     this.refresh()
   }
@@ -98,9 +103,17 @@ export class FormField<Value> {
     this.refresh()
   }
 
-  handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  public handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const newValue = evt.target.value as Value;
     this.setValue(newValue);
+  }
+
+  public toggle = () => {
+    if (typeof this.type !== 'boolean') {
+      console.warn('@xvii/useform: You tried to call toggle() on non-boolean value')
+    }
+
+    this.setValue(!Boolean(this.value) as Value)
   }
 
   validate = () => {
@@ -108,12 +121,12 @@ export class FormField<Value> {
     return isValid;
   }
 
-  pushToArray = (value: Flatten<Value>) => {
+  public pushToArray = (value: Flatten<Value>) => {
     (this._value as Value[]).push(value)
     this.refresh()
   }
 
-  removeFromArray = (value: Flatten<Value>) => {
+  public removeFromArray = (value: Flatten<Value>) => {
     pull(this._value as [], value)
     this.refresh()
   }
