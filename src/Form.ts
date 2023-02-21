@@ -87,12 +87,12 @@ export class FormField<Value> {
         : '') as Value
   }
 
-  setValue(newValue: Value) {
+  setValue = (newValue: Value) => {
     this._value = newValue;
     this.refresh()
   }
 
-  setError(isValid: boolean, errorText?: string) {
+  setError = (isValid: boolean, errorText?: string) => {
     this.error = !isValid;
     this.errorText = errorText;
     this.refresh()
@@ -103,17 +103,17 @@ export class FormField<Value> {
     this.setValue(newValue);
   }
 
-  validate() {
+  validate = () => {
     const isValid = this.validators?.every(validator => validator?.validate())
     return isValid;
   }
 
-  pushToArray(value: Flatten<Value>) {
+  pushToArray = (value: Flatten<Value>) => {
     (this._value as Value[]).push(value)
     this.refresh()
   }
 
-  removeFromArray(value: Flatten<Value>) {
+  removeFromArray = (value: Flatten<Value>) => {
     pull(this._value as [], value)
     this.refresh()
   }
