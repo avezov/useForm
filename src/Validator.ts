@@ -1,4 +1,4 @@
-import { FormField } from "./Form";
+import FormField from "./FormField";
 import { maxLength, MaxLengthValidator } from "./Validators/MaxLength";
 import { minLength, MinLengthValidator } from "./Validators/MinLength";
 import { notEmpty, NotEmptyValidator } from "./Validators/NotEmpty";
