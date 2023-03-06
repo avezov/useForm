@@ -45,9 +45,11 @@ export default class FormField<Value> {
 
   }
 
-  public setValue = (newValue: Value) => {
+  public setValue = (newValue: Value, refresh = true) => {
     this._value = newValue;
-    this.refresh()
+    if (refresh) {
+      this.refresh()
+    }
   }
 
   setError = (isValid: boolean, errorText?: string) => {

@@ -1,4 +1,4 @@
-import { mapValues, values } from 'lodash'
+import { forEach, mapValues, values } from 'lodash'
 import { AvailableValidators } from './Validator'
 import FormField from './FormField'
 
@@ -15,6 +15,10 @@ export type FormFieldProps = {
 
 type FieldNames<T extends FormProps> = {
   [K in keyof T['fields']]?: FormField<T['fields'][K]['valueType']>
+}
+
+type SetFieldNames<T extends FormProps> = {
+  [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
 export class Form<T extends FormProps> {
@@ -48,6 +52,14 @@ export class Form<T extends FormProps> {
 
   getFormData(): FieldNames<T> {
     return mapValues(this.fields, field => field?.value)
+  }
+
+  setFormData(data: SetFieldNames<T>) {
+    forEach(data, (value, key) => {
+      this.fields[key]?.setValue(value, false);
+    })
+
+    this.validate()
   }
 
   validate() {
