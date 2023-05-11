@@ -5,12 +5,14 @@ Forms for ReactJS.
 # Installation
 
 ```bash
-npm install --save @xvii/useForm
+npm install --save @xvii/useform
 ```
 
 # Example
 
 ```js
+import { useForm } from '@xvii/useform';
+
 const form = useForm({
   onSubmit(formData) {
     console.log("Submit", formData);

@@ -71,6 +71,20 @@ export default class FormField<Value> {
     this.setValue(!Boolean(this.value) as Value)
   }
 
+  public toggleInArray = (value: Flatten<Value>) => {
+    if (!(this.type instanceof Array)) {
+      console.warn('@xvii/useform: You tried to call toggleInArray() on a non-array value')
+    }
+
+    const exists = (this.value as Flatten<Value>[]).includes(value);
+
+    if (exists) {
+      this.removeFromArray(value)
+    } else {
+      this.pushToArray(value)
+    }
+  }
+
   validate = () => {
     const isValid = this.validators?.every(validator => validator?.validate())
     return isValid;
