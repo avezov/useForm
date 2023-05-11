@@ -1,4 +1,4 @@
-import { pull } from "lodash";
+import { pull, pullAll } from "lodash";
 import { ChangeEvent } from "react";
 import { FormFieldProps } from "./Form";
 import { Validators } from "./Validator";
@@ -90,13 +90,30 @@ export default class FormField<Value> {
     return isValid;
   }
 
-  public pushToArray = (value: Flatten<Value>) => {
-    (this._value as Value[]).push(value)
+  public pushToArray = (value: Flatten<Value> | Value) => {
+    let newValue = [
+      ...(this._value as Value[])
+    ];
+
+    if (value instanceof Array) {
+      newValue = [
+        ...newValue,
+        ...value
+      ]
+    } else {
+      newValue.push(value)
+    }
+
+    this._value = newValue as Value;
     this.refresh()
   }
 
-  public removeFromArray = (value: Flatten<Value>) => {
-    pull(this._value as [], value)
+  public removeFromArray = (value: Flatten<Value> | Value) => {
+    if (value instanceof Array) {
+      pullAll(this._value as [], value)
+    } else {
+      pull(this._value as [], value)
+    }
     this.refresh()
   }
 
