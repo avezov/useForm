@@ -83,6 +83,10 @@ export class Form<T extends FormProps> {
     return [FormState.SUCCESS, FormState.FAIL].includes(this.state);
   }
 
+  public get isSuccess() {
+    return this.state === FormState.SUCCESS;
+  }
+
 
   /**
    * Return to initial state of form and fields
