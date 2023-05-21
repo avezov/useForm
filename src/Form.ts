@@ -21,12 +21,20 @@ type SetFieldNames<T extends FormProps> = {
   [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
+export enum FormState {
+  INIT = 0,
+  SENDING = 1,
+  SUCCESS = 2,
+  FAIL = 3
+}
+
 export class Form<T extends FormProps> {
   private refresh: () => void;
   private onSubmit: (formData: FieldNames<T>) => void;
 
   fields: FieldNames<T> = {}
   isValid: boolean = false;
+  state: FormState = FormState.INIT;
 
   constructor(props: T, refresh: () => void) {
     this.refresh = refresh;
@@ -60,6 +68,27 @@ export class Form<T extends FormProps> {
     })
 
     this.validate()
+  }
+
+  public setState(state: FormState) {
+    this.state = state;
+    this.refresh();
+  }
+
+  public get isSending() {
+    return this.state === FormState.SENDING;
+  }
+
+  public get isSent() {
+    return [FormState.SUCCESS, FormState.FAIL].includes(this.state);
+  }
+
+
+  /**
+   * Return to initial state of form and fields
+   */
+  public reset() {
+    this.setState(FormState.INIT);
   }
 
   validate() {
