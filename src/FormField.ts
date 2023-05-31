@@ -24,7 +24,7 @@ export default class FormField<Value> {
   }
 
   get value() {
-    if (this._value) {
+    if (typeof this._value !== 'undefined') {
       return this._value;
     }
 
