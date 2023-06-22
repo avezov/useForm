@@ -31,12 +31,14 @@ export enum FormState {
 export class Form<T extends FormProps> {
   private refresh: () => void;
   private onSubmit: (formData: FieldNames<T>) => void;
+  private initialFormConfig: T
 
   fields: FieldNames<T> = {}
   isValid: boolean = false;
   state: FormState = FormState.INIT;
 
   constructor(props: T, refresh: () => void) {
+    this.initialFormConfig = props;
     this.refresh = refresh;
     this.fields = mapValues(props.fields, field => new FormField(field, this.refresh))
     this.onSubmit = props.onSubmit as (formData: FieldNames<T>) => void;
@@ -92,6 +94,10 @@ export class Form<T extends FormProps> {
    * Return to initial state of form and fields
    */
   public reset() {
+    forEach(this.initialFormConfig.fields, (field, key) => {
+      this.fields[key]?.setValue(field.defaultValue, false);
+    })
+
     this.setState(FormState.INIT);
   }
 
