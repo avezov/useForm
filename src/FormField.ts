@@ -109,11 +109,17 @@ export default class FormField<Value> {
   }
 
   public removeFromArray = (value: Flatten<Value> | Value) => {
+    let newValue = [
+      ...(this._value as Value[])
+    ]
+
     if (value instanceof Array) {
-      pullAll(this._value as [], value)
+      pullAll(newValue as [], value)
     } else {
-      pull(this._value as [], value)
+      pull(newValue as [], value)
     }
+
+    this._value = newValue as Value;
     this.refresh()
   }
 
