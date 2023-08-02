@@ -1,4 +1,4 @@
-import { useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { Form, FormProps } from "./Form";
 
 export function useForm<T extends FormProps>(props: T) {
@@ -9,6 +9,15 @@ export function useForm<T extends FormProps>(props: T) {
     return new Form<T>(cachedProps, refresh)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (props.onSubmit) {
+      form.setOnSubmit(props.onSubmit)
+    }
+  }, [
+    form,
+    props.onSubmit
+  ])
 
   return form
 }

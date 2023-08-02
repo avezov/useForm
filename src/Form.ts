@@ -21,6 +21,8 @@ type SetFieldNames<T extends FormProps> = {
   [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
+type FormOnSubmit<T extends FormProps> = (formData: FieldNames<T>) => void;
+
 export enum FormState {
   INIT = 0,
   SENDING = 1,
@@ -30,7 +32,7 @@ export enum FormState {
 
 export class Form<T extends FormProps> {
   private refresh: () => void;
-  private onSubmit: (formData: FieldNames<T>) => void;
+  private onSubmit: FormOnSubmit<T>
   private initialFormConfig: T
 
   fields: FieldNames<T> = {}
@@ -41,7 +43,7 @@ export class Form<T extends FormProps> {
     this.initialFormConfig = props;
     this.refresh = refresh;
     this.fields = mapValues(props.fields, field => new FormField(field, this.refresh))
-    this.onSubmit = props.onSubmit as (formData: FieldNames<T>) => void;
+    this.onSubmit = props.onSubmit as FormOnSubmit<T>
   }
 
   handleSubmit = () => {
@@ -87,6 +89,10 @@ export class Form<T extends FormProps> {
 
   public get isSuccess() {
     return this.state === FormState.SUCCESS;
+  }
+
+  public setOnSubmit(onSubmit: FormOnSubmit<T>) {
+    this.onSubmit = onSubmit;
   }
 
 
