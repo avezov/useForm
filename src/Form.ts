@@ -62,7 +62,7 @@ export class Form<T extends FormProps> {
     this.refresh()
   }
 
-  getFormData() {
+  getFormData(): SetFieldNames<T> {
     return mapValues(this.fields, field => field?.value)
   }
 
