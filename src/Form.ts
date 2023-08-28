@@ -17,7 +17,7 @@ type FieldNames<T extends FormProps> = {
   [K in keyof T['fields']]?: FormField<T['fields'][K]['valueType']>
 }
 
-type SetFieldNames<T extends FormProps> = {
+type FormDataType<T extends FormProps> = {
   [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
@@ -62,11 +62,11 @@ export class Form<T extends FormProps> {
     this.refresh()
   }
 
-  getFormData(): SetFieldNames<T> {
+  getFormData(): FormDataType<T> {
     return mapValues(this.fields, field => field?.value)
   }
 
-  setFormData(data: SetFieldNames<T>) {
+  setFormData(data: FormDataType<T>) {
     forEach(data, (value, key) => {
       this.fields[key]?.setValue(value, false);
     })

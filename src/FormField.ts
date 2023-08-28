@@ -1,4 +1,4 @@
-import { pull, pullAll } from "lodash";
+import { pull, pullAll, isEqual } from "lodash";
 import { ChangeEvent } from "react";
 import { FormFieldProps } from "./Form";
 import { Validators } from "./Validator";
@@ -46,7 +46,10 @@ export default class FormField<Value> {
   }
 
   public setValue = (newValue: Value, refresh = true) => {
-    this._value = newValue;
+    if (!isEqual(this._value, newValue)) {
+      this._value = newValue;
+    }
+
     if (refresh) {
       this.refresh()
     }
