@@ -39,7 +39,7 @@ export class Form<T extends FormProps> {
   isValid: boolean = false;
   state: FormState = FormState.INIT;
 
-  signal?: AbortController;
+  public signal?: AbortController = new AbortController()
 
   constructor(props: T, refresh: () => void) {
     this.initialFormConfig = props;
