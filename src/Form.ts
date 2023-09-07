@@ -4,7 +4,7 @@ import FormField from './FormField'
 
 export type FormProps = {
   fields: Record<string, FormFieldProps>
-  onSubmit?(formData: Record<string, any>): void
+  onSubmit?(formData: Record<string, any>, signal?: AbortSignal): void
 }
 
 export type FormFieldProps = {
