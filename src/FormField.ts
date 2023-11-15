@@ -86,6 +86,8 @@ export default class FormField<Value> {
     } else {
       this.pushToArray(value)
     }
+
+    return !exists;
   }
 
   validate = () => {
