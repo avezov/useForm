@@ -22,7 +22,7 @@ type FormDataType<T extends FormProps> = {
   [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
-type FormOnSubmit<T extends FormProps> = (formData: FieldNames<T>, signal?: AbortSignal) => void;
+type FormOnSubmit<T extends FormProps> = (formData: FieldNames<T>, signal?: AbortSignal, form?: Form<T>) => void;
 
 export enum FormState {
   INIT = 0,
@@ -59,7 +59,7 @@ export class Form<T extends FormProps> {
       this.signal = new AbortController()
 
       const formData = this.getFormData();
-      this.onSubmit?.(formData, this.signal.signal)
+      this.onSubmit?.(formData, this.signal.signal, this)
     }
 
     return isValid;

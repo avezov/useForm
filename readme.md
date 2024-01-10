@@ -27,6 +27,7 @@ const form = useForm({
           minLength: 3,
         }),
       ],
+      validateOnChange: true
     },
     password: {
       defaultValue: "",
