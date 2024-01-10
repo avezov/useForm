@@ -10,7 +10,8 @@ export type FormProps = {
 export type FormFieldProps = {
   defaultValue?: number | string | number[] | string[] | boolean | boolean[],
   valueType?: any
-  validators?: AvailableValidators[]
+  validators?: AvailableValidators[],
+  validateOnChange?: boolean
 }
 
 type FieldNames<T extends FormProps> = {

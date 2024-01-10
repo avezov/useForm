@@ -11,6 +11,8 @@ export default class FormField<Value> {
   error: boolean = false;
   errorText?: string;
 
+  private validateOnChange: boolean = false;
+
   private refresh: () => void;
   private validators: Validators<Value>[] = [];
 
@@ -21,6 +23,7 @@ export default class FormField<Value> {
     this.validators = props.validators?.map(([validator, params]) => {
       return new validator({ field: this, params })
     }) ?? []
+    this.validateOnChange = props.validateOnChange ?? false;
   }
 
   get value() {
@@ -48,6 +51,10 @@ export default class FormField<Value> {
   public setValue = (newValue: Value, refresh = true) => {
     if (!isEqual(this._value, newValue)) {
       this._value = newValue;
+    }
+
+    if (this.validateOnChange) {
+      this.validate()
     }
 
     if (refresh) {
