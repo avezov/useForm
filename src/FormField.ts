@@ -20,9 +20,7 @@ export default class FormField<Value> {
     this._value = props.defaultValue as Value;
     this.type = props.valueType ?? typeof props.defaultValue;
     this.refresh = refresh;
-    this.validators = props.validators?.map(([validator, params]) => {
-      return new validator({ field: this, params })
-    }) ?? []
+    this.replaceValidators(props.validators ?? [])
     this.validateOnChange = props.validateOnChange ?? false;
   }
 
@@ -99,6 +97,10 @@ export default class FormField<Value> {
 
   validate = () => {
     const isValid = this.validators?.every(validator => validator?.validate())
+    console.log('!!! validate', isValid, this.value, this.validators, this)
+    if (isValid) {
+      this.setError(true, undefined)
+    }
     return isValid;
   }
 
