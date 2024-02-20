@@ -102,12 +102,14 @@ export default class FormField<Value> {
     return isValid;
   }
 
-  public replaceValidators = (validators: AvailableValidators[]) => {
+  public replaceValidators = (validators: AvailableValidators[], validate: boolean = false) => {
     this.validators = validators?.map(([validator, params]) => {
       return new validator({ field: this, params })
     }) ?? []
 
-    this.validate()
+    if (validate) {
+      this.validate()
+    }
   }
 
   public pushToArray = (value: Flatten<Value> | Value) => {
