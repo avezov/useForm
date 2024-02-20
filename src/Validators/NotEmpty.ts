@@ -4,7 +4,10 @@ type NotEmptyParams = DefaultValidatorProps & {}
 
 export class NotEmptyValidator<T> extends Validator<T> {
   validate(): boolean {
-    const isValid = !!this.field.value;
+    const isValid =
+      Array.isArray(this.field.value)
+        ? !!this.field.value.length
+        : !!this.field.value;
     this.setError(isValid);
     return isValid;
   }

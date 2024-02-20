@@ -77,6 +77,7 @@ const form = useForm({
 | handleChange | (evt) => void | Handler for `onChange` |
 | pushToArray | (value) => void | Add value for arrayable fields |
 | removeFromArray | (value) => void | Remove value from arrayable fields |
+| replaceValidators | () => void | Replace validators for current field |
 | setValue | (value) => void | Set value of field |
 | toggle | () => void | Toggler for boolean values |
 | validate | () => void | Force validation of field |
