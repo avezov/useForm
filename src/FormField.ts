@@ -1,7 +1,7 @@
 import { pull, pullAll, isEqual } from "lodash";
 import { ChangeEvent } from "react";
 import { FormFieldProps } from "./Form";
-import { Validators } from "./Validator";
+import { AvailableValidators, Validators } from "./Validator";
 
 type Flatten<T> = T extends any[] ? T[number] : T;
 
@@ -100,6 +100,14 @@ export default class FormField<Value> {
   validate = () => {
     const isValid = this.validators?.every(validator => validator?.validate())
     return isValid;
+  }
+
+  public replaceValidators = (validators: AvailableValidators[]) => {
+    this.validators = validators?.map(([validator, params]) => {
+      return new validator({ field: this, params })
+    }) ?? []
+
+    this.validate()
   }
 
   public pushToArray = (value: Flatten<Value> | Value) => {
