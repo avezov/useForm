@@ -97,8 +97,7 @@ export default class FormField<Value> {
 
   validate = () => {
     const isValid = this.validators?.every(validator => validator?.validate())
-    console.log('!!! validate', isValid, this.value, this.validators, this)
-    if (isValid) {
+    if (isValid && this.error) {
       this.setError(true, undefined)
     }
     return isValid;
