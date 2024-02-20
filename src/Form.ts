@@ -99,6 +99,10 @@ export class Form<T extends FormProps> {
     return this.state === FormState.SUCCESS;
   }
 
+  public get isFail() {
+    return this.state === FormState.FAIL;
+  }
+
   public setOnSubmit(onSubmit: FormOnSubmit<T>) {
     this.onSubmit = onSubmit;
   }
