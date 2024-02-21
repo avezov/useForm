@@ -74,12 +74,14 @@ export class Form<T extends FormProps> {
     return mapValues(this.fields, field => field?.value)
   }
 
-  setFormData(data: FormDataType<T>) {
+  setFormData(data: FormDataType<T>, validate: boolean = false) {
     forEach(data, (value, key) => {
       this.fields[key]?.setValue(value, false);
     })
 
-    this.validate()
+    if (validate) {
+      this.validate()
+    }
   }
 
   public setState(state: FormState) {
