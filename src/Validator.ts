@@ -4,7 +4,7 @@ import { minLength, MinLengthValidator } from "./Validators/MinLength";
 import { notEmpty, NotEmptyValidator } from "./Validators/NotEmpty";
 
 export type DefaultValidatorProps = {
-  errorText: string
+  errorText: string | (() => string)
 }
 
 export type Validators<T> =
@@ -28,7 +28,7 @@ export class Validator<T> {
   field: FormField<T>;
 
   defaultErrorText?: string;
-  errorText?: string;
+  errorText?: string | (() => string);
 
   constructor({ field, params }: ValidatorProps<T, DefaultValidatorProps>) {
     this.field = field;
@@ -40,7 +40,8 @@ export class Validator<T> {
   }
 
   setError(isValid: boolean) {
-    this.field.setError(isValid, isValid ? undefined : this.errorText)
+    const errorText = typeof this.errorText === 'function' ? this.errorText() : this.errorText
+    this.field.setError(isValid, isValid ? undefined : errorText)
   }
 
   validate() {
