@@ -1,4 +1,6 @@
-import { pull, pullAll, isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
+import pull from "lodash/pull";
+import pullAll from "lodash/pullAll";
 import { ChangeEvent } from "react";
 import { FormFieldProps } from "./Form";
 import { AvailableValidators, Validators } from "./Validator";

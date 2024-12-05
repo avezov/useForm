@@ -1,4 +1,6 @@
-import { forEach, mapValues, values } from 'lodash'
+import forEach from 'lodash/forEach'
+import mapValues from 'lodash/mapValues'
+import values from 'lodash/values'
 import { AvailableValidators } from './Validator'
 import FormField from './FormField'
 
