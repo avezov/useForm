@@ -83,6 +83,8 @@ export class Form<T extends FormProps> {
 
     if (validate) {
       this.validate()
+    } else {
+      this.refresh()
     }
   }
 
