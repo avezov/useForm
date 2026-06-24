@@ -6,7 +6,7 @@ import FormField from './FormField'
 
 export type FormProps = {
   fields: Record<string, FormFieldProps>
-  onSubmit?(formData: Record<string, any>, signal?: AbortSignal, form?: Form<FormProps>): void
+  onSubmit?(formData: Record<string, any>, signal: AbortSignal, form: Form<FormProps>): void
 }
 
 export type FormFieldProps = {
@@ -24,7 +24,7 @@ type FormDataType<T extends FormProps> = {
   [K in keyof T['fields']]?: T['fields'][K]['valueType']
 }
 
-type FormOnSubmit<T extends FormProps> = (formData: FieldNames<T>, signal?: AbortSignal, form?: Form<FormProps>) => void;
+type FormOnSubmit<T extends FormProps> = (formData: FieldNames<T>, signal: AbortSignal, form: Form<FormProps>) => void;
 
 export enum FormState {
   INIT = 0,
